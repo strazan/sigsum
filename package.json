@@ -1,6 +1,6 @@
 {
   "name": "sigsum",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Fast file hashing with BLAKE3. Native Rust speed for duplicate detection, integrity checks, and content addressing.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -36,9 +36,7 @@
     "lint:fix": "biome check --write .",
     "format:rs": "cargo fmt --check",
     "clippy": "cargo clippy -- -D warnings",
-    "release": "sh -c 'npm version $0 --no-git-tag-version && npx napi version && git add -A && git commit -m \"v$0\" && git tag \"v$0\" && git push origin main \"v$0\"'",
-    "prepublishOnly": "napi prepublish -t npm",
-    "version": "napi version"
+    "release": "sh -c 'npm version $0 --no-git-tag-version && npx napi version && git add -A && git commit -m \"v$0\" && git tag \"v$0\" && git push origin main \"v$0\"'"
   },
   "napi": {
     "binaryName": "sigsum",

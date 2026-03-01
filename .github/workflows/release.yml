@@ -129,26 +129,37 @@ jobs:
           done
           ls -la *.node
       - run: pnpm build:ts
-      - name: Prepare platform packages
+      - name: Prepare and publish platform packages
         run: |
-          cp sigsum.darwin-arm64.node npm/darwin-arm64/
-          cp sigsum.darwin-x64.node npm/darwin-x64/
-          cp sigsum.linux-arm64-gnu.node npm/linux-arm64-gnu/
-          cp sigsum.linux-arm64-musl.node npm/linux-arm64-musl/
-          cp sigsum.linux-x64-gnu.node npm/linux-x64-gnu/
-          cp sigsum.linux-x64-musl.node npm/linux-x64-musl/
-          cp sigsum.win32-x64-msvc.node npm/win32-x64-msvc/
-          npx napi prepublish -t npm --no-gh-release
-      - name: Publish platform packages
-        run: |
+          VERSION=$(node -p "require('./package.json').version")
           for pkg in npm/*/; do
-            if [ -f "$pkg/package.json" ]; then
+            NAME=$(basename "$pkg")
+            NODE_FILE="sigsum.${NAME}.node"
+            if [ -f "$NODE_FILE" ]; then
+              cp "$NODE_FILE" "$pkg"
+              npm version "$VERSION" --no-git-tag-version --prefix "$pkg"
               echo "Publishing $pkg"
               npm publish "$pkg" --access public || true
             fi
           done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Add optionalDependencies
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          node -e "
+            const pkg = require('./package.json');
+            pkg.optionalDependencies = {
+              'sigsum-darwin-arm64': '$VERSION',
+              'sigsum-darwin-x64': '$VERSION',
+              'sigsum-linux-arm64-gnu': '$VERSION',
+              'sigsum-linux-arm64-musl': '$VERSION',
+              'sigsum-linux-x64-gnu': '$VERSION',
+              'sigsum-linux-x64-musl': '$VERSION',
+              'sigsum-win32-x64-msvc': '$VERSION',
+            };
+            require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
       - name: Publish main package
         run: npm publish --provenance --access public --ignore-scripts
         env:
