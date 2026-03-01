@@ -1,6 +1,6 @@
 {
   "name": "sigsum",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Fast file hashing with BLAKE3. Native Rust speed for duplicate detection, integrity checks, and content addressing.",
   "type": "module",
   "main": "./dist/index.cjs",

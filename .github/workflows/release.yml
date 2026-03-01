@@ -126,8 +126,9 @@ jobs:
         run: |
           for dir in artifacts/bindings-*/; do
             cp "$dir"*.node .
+            cp "$dir"native.cjs . 2>/dev/null || true
           done
-          ls -la *.node
+          ls -la *.node native.cjs
       - run: pnpm build:ts
       - name: Prepare and publish platform packages
         run: |
