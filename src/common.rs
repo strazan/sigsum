@@ -1,6 +1,3 @@
-// Types in this module are constructed by NAPI-RS generated code that rustc cannot see.
-#![allow(dead_code)]
-
 use napi_derive::napi;
 use std::path::Path;
 use std::{fs, io};
