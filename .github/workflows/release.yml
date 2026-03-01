@@ -130,7 +130,15 @@ jobs:
           ls -la *.node
       - run: pnpm build:ts
       - name: Prepare platform packages
-        run: npx napi prepublish -t npm --no-gh-release
+        run: |
+          cp sigsum.darwin-arm64.node npm/darwin-arm64/
+          cp sigsum.darwin-x64.node npm/darwin-x64/
+          cp sigsum.linux-arm64-gnu.node npm/linux-arm64-gnu/
+          cp sigsum.linux-arm64-musl.node npm/linux-arm64-musl/
+          cp sigsum.linux-x64-gnu.node npm/linux-x64-gnu/
+          cp sigsum.linux-x64-musl.node npm/linux-x64-musl/
+          cp sigsum.win32-x64-msvc.node npm/win32-x64-msvc/
+          npx napi prepublish -t npm --no-gh-release
       - name: Publish platform packages
         run: |
           for pkg in npm/*/; do
