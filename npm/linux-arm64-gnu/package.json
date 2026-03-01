@@ -1,12 +1,22 @@
 {
   "name": "sigsum-linux-arm64-gnu",
-  "version": "0.0.0",
-  "os": ["linux"],
-  "cpu": ["arm64"],
-  "libc": ["glibc"],
+  "version": "0.1.0",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "libc": [
+    "glibc"
+  ],
   "main": "sigsum.linux-arm64-gnu.node",
-  "files": ["sigsum.linux-arm64-gnu.node"],
+  "files": [
+    "sigsum.linux-arm64-gnu.node"
+  ],
   "description": "sigsum native binding for linux-arm64-gnu",
   "license": "MIT",
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  }
 }

@@ -129,8 +129,16 @@ jobs:
           done
           ls -la *.node
       - run: pnpm build:ts
-      - name: Publish platform packages
+      - name: Prepare platform packages
         run: npx napi prepublish -t npm --no-gh-release
+      - name: Publish platform packages
+        run: |
+          for pkg in npm/*/; do
+            if [ -f "$pkg/package.json" ]; then
+              echo "Publishing $pkg"
+              npm publish "$pkg" --access public || true
+            fi
+          done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish main package
