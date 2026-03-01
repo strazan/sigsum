@@ -1,10 +1,6 @@
 # sigsum
 
-Fast file hashing for Node.js. BLAKE3 by default, XXH3 when you want max speed, native Rust performance.
-
-Detect duplicate uploads, verify file integrity, content-address your storage. Single API, two algorithms, prebuilt binaries, zero node-gyp.
-
-Under the hood: Rust + napi-rs native bindings, rayon-parallelized BLAKE3, mmap for large files, batch API with parallel file hashing.
+Native BLAKE3 and XXH3 file hashing for Node.js. Rust, prebuilt, no node-gyp.
 
 ## Install
 
@@ -19,7 +15,6 @@ import { sigsum } from "sigsum";
 
 // Hash a file (mmap + rayon for large files)
 const hash = await sigsum.file("/path/to/file.pdf");
-// → "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
 
 // Hash a buffer
 const hash = await sigsum.buffer(data);
@@ -32,7 +27,6 @@ sigsum.compare(hashA, hashB); // true/false
 
 // Hash + compare in one call (auto-detects algorithm from hash length)
 const result = await sigsum.match("/path/to/file.pdf", expectedHash);
-// → { matches: true, hash: "af13...", size: 1048576 }
 ```
 
 ### Batch hashing
