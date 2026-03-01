@@ -31,7 +31,7 @@ const result = await sigsum.match("/path/to/file.pdf", expectedHash);
 
 ### Batch hashing
 
-Hash many files in a single native call. Rayon distributes files across cores — no NAPI overhead per file.
+Hash many files in a single native call. Rayon distributes files across cores - no NAPI overhead per file.
 
 ```ts
 const hashes = await sigsum.files([
@@ -43,7 +43,7 @@ const hashes = await sigsum.files([
 
 ### XXH3 (fast mode)
 
-When you don't need cryptographic collision resistance — duplicate detection, cache keys, content addressing with trusted inputs.
+When you don't need cryptographic collision resistance - duplicate detection, cache keys, content addressing with trusted inputs.
 
 ```ts
 // 2.5x faster than BLAKE3, outputs 32-char hex (128-bit)
@@ -57,12 +57,12 @@ await sigsum.files(paths, { algorithm: "xxh3" });
 
 ### Algorithm detection
 
-The algorithm is encoded in the hash length — 64 hex chars = BLAKE3, 32 hex chars = XXH3.
+The algorithm is encoded in the hash length - 64 hex chars = BLAKE3, 32 hex chars = XXH3.
 
 ```ts
 sigsum.detectAlgorithm(hash); // → "blake3" | "xxh3"
 
-// match() auto-detects — pass any hash and it uses the right algorithm
+// match() auto-detects - pass any hash and it uses the right algorithm
 await sigsum.match(path, blake3Hash); // uses BLAKE3
 await sigsum.match(path, xxh3Hash);   // uses XXH3
 ```
@@ -79,7 +79,7 @@ Measured on Apple M3 Pro, Node.js v24.
 | 10 MB | 1.0ms | 0.58ms | 4.9ms |
 | 100 MB | 8.6ms | 9.0ms | 49ms |
 
-### Batch — 100 x 3 MB files (300 MB total)
+### Batch - 100 x 3 MB files (300 MB total)
 
 | Method | Mean | vs Node.js |
 |--------|------|-----------|
@@ -97,6 +97,6 @@ pnpm bench
 
 - **BLAKE3** (default): Cryptographic hash with built-in tree structure for rayon parallelism. Files > 1 MB are memory-mapped. 64-char lowercase hex output, fits in `VARCHAR(64)`
 - **XXH3-128**: Non-cryptographic hash optimized for throughput. Single-threaded per file, parallelized across files via rayon `par_iter`. 32-char lowercase hex output
-- **Batch API**: Single NAPI boundary crossing for N files. Rayon distributes work across cores inside Rust — no JS event loop involvement
+- **Batch API**: Single NAPI boundary crossing for N files. Rayon distributes work across cores inside Rust - no JS event loop involvement
 - **Algorithm detection**: Hash length distinguishes algorithms (64 = BLAKE3, 32 = XXH3). `match()` auto-selects the right algorithm
 - **Streaming**: NAPI class with `update(chunk)` / `digest()` for hashing upload streams before writing to disk

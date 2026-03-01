@@ -21,8 +21,7 @@
   "files": [
     "dist",
     "native.cjs",
-    "native.d.cts",
-    "index.d.ts"
+    "native.d.cts"
   ],
   "scripts": {
     "build:rs": "napi build --platform --release && mv index.js native.cjs",
