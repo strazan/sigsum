@@ -137,7 +137,7 @@ jobs:
             NODE_FILE="sigsum.${NAME}.node"
             if [ -f "$NODE_FILE" ]; then
               cp "$NODE_FILE" "$pkg"
-              npm version "$VERSION" --no-git-tag-version --prefix "$pkg"
+              node -e "const p='$pkg/package.json';const j=require('./'+p);j.version='$VERSION';require('fs').writeFileSync(p,JSON.stringify(j,null,2)+'\n')"
               echo "Publishing $pkg"
               npm publish "$pkg" --access public || true
             fi
