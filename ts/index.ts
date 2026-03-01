@@ -1,3 +1,3 @@
-export { FileNotFoundError, SighashError } from "./errors.js";
-export { sighash } from "./sighash.js";
+export { FileNotFoundError, SigsumError } from "./errors.js";
+export { sigsum } from "./sigsum.js";
 export type { Algorithm, FileHashOptions, HashAlgo, MatchResult, Options } from "./types.js";

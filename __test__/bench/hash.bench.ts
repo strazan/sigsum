@@ -3,7 +3,7 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, beforeAll, bench, describe } from "vitest";
-import { sighash } from "../../dist/index.js";
+import { sigsum } from "../../dist/index.js";
 import { hashBufferXxh3, hashFilesXxh3, hashFileXxh3 } from "../../native.cjs";
 
 let tempDir: string;
@@ -20,7 +20,7 @@ const sizes = {
 };
 
 beforeAll(() => {
-  tempDir = mkdtempSync(join(tmpdir(), "sighash-bench-"));
+  tempDir = mkdtempSync(join(tmpdir(), "sigsum-bench-"));
 
   for (const [label, size] of Object.entries(sizes)) {
     const buf = Buffer.alloc(size, 0xab);
@@ -53,7 +53,7 @@ function nodeSha256Buffer(data: Buffer): string {
 describe("file hashing: blake3 vs xxh3 vs sha256", () => {
   for (const label of Object.keys(sizes)) {
     bench(`blake3 file (${label})`, async () => {
-      await sighash.file(files[label]!);
+      await sigsum.file(files[label]!);
     });
 
     bench(`xxh3 file (${label})`, async () => {
@@ -69,7 +69,7 @@ describe("file hashing: blake3 vs xxh3 vs sha256", () => {
 describe("buffer hashing: blake3 vs xxh3 vs sha256", () => {
   for (const label of Object.keys(sizes)) {
     bench(`blake3 buffer (${label})`, async () => {
-      await sighash.buffer(buffers[label]!);
+      await sigsum.buffer(buffers[label]!);
     });
 
     bench(`xxh3 buffer (${label})`, async () => {
@@ -89,12 +89,12 @@ describe("batch file hashing (100 x 3MB)", () => {
   });
 
   bench("blake3 batch (par_iter)", async () => {
-    const results = await sighash.files(batchFiles);
+    const results = await sigsum.files(batchFiles);
     if (results.length !== 100) throw new Error("unexpected");
   });
 
   bench("blake3 x100 concurrent", async () => {
-    const results = await Promise.all(batchFiles.map((f) => sighash.file(f)));
+    const results = await Promise.all(batchFiles.map((f) => sigsum.file(f)));
     if (results.length !== 100) throw new Error("unexpected");
   });
 

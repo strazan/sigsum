@@ -1,12 +1,12 @@
 {
-  "name": "sighash-linux-x64-gnu",
+  "name": "sigsum-linux-x64-gnu",
   "version": "0.0.0",
   "os": ["linux"],
   "cpu": ["x64"],
   "libc": ["glibc"],
-  "main": "sighash.linux-x64-gnu.node",
-  "files": ["sighash.linux-x64-gnu.node"],
-  "description": "sighash native binding for linux-x64-gnu",
+  "main": "sigsum.linux-x64-gnu.node",
+  "files": ["sigsum.linux-x64-gnu.node"],
+  "description": "sigsum native binding for linux-x64-gnu",
   "license": "MIT",
   "engines": { "node": ">=18" }
 }

@@ -1,4 +1,4 @@
-# sighash
+# sigsum
 
 Fast file hashing for Node.js. BLAKE3 by default, XXH3 when you want max speed, native Rust performance.
 
@@ -9,29 +9,29 @@ Under the hood: Rust + napi-rs native bindings, rayon-parallelized BLAKE3, mmap 
 ## Install
 
 ```bash
-pnpm add sighash
+pnpm add sigsum
 ```
 
 ## Usage
 
 ```ts
-import { sighash } from "sighash";
+import { sigsum } from "sigsum";
 
 // Hash a file (mmap + rayon for large files)
-const hash = await sighash.file("/path/to/file.pdf");
+const hash = await sigsum.file("/path/to/file.pdf");
 // → "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
 
 // Hash a buffer
-const hash = await sighash.buffer(data);
+const hash = await sigsum.buffer(data);
 
 // Hash a stream (e.g., upload before writing to disk)
-const hash = await sighash.stream(readableStream);
+const hash = await sigsum.stream(readableStream);
 
 // Compare two hashes
-sighash.compare(hashA, hashB); // true/false
+sigsum.compare(hashA, hashB); // true/false
 
 // Hash + compare in one call (auto-detects algorithm from hash length)
-const result = await sighash.match("/path/to/file.pdf", expectedHash);
+const result = await sigsum.match("/path/to/file.pdf", expectedHash);
 // → { matches: true, hash: "af13...", size: 1048576 }
 ```
 
@@ -40,7 +40,7 @@ const result = await sighash.match("/path/to/file.pdf", expectedHash);
 Hash many files in a single native call. Rayon distributes files across cores — no NAPI overhead per file.
 
 ```ts
-const hashes = await sighash.files([
+const hashes = await sigsum.files([
   "/uploads/a.pdf",
   "/uploads/b.png",
   "/uploads/c.mp4",
@@ -53,12 +53,12 @@ When you don't need cryptographic collision resistance — duplicate detection, 
 
 ```ts
 // 2.5x faster than BLAKE3, outputs 32-char hex (128-bit)
-const hash = await sighash.file(path, { algorithm: "xxh3" });
+const hash = await sigsum.file(path, { algorithm: "xxh3" });
 
 // Works everywhere: buffer, stream, batch
-await sighash.buffer(data, { algorithm: "xxh3" });
-await sighash.stream(readable, { algorithm: "xxh3" });
-await sighash.files(paths, { algorithm: "xxh3" });
+await sigsum.buffer(data, { algorithm: "xxh3" });
+await sigsum.stream(readable, { algorithm: "xxh3" });
+await sigsum.files(paths, { algorithm: "xxh3" });
 ```
 
 ### Algorithm detection
@@ -66,11 +66,11 @@ await sighash.files(paths, { algorithm: "xxh3" });
 The algorithm is encoded in the hash length — 64 hex chars = BLAKE3, 32 hex chars = XXH3.
 
 ```ts
-sighash.detectAlgorithm(hash); // → "blake3" | "xxh3"
+sigsum.detectAlgorithm(hash); // → "blake3" | "xxh3"
 
 // match() auto-detects — pass any hash and it uses the right algorithm
-await sighash.match(path, blake3Hash); // uses BLAKE3
-await sighash.match(path, xxh3Hash);   // uses XXH3
+await sigsum.match(path, blake3Hash); // uses BLAKE3
+await sigsum.match(path, xxh3Hash);   // uses XXH3
 ```
 
 ## Benchmarks
@@ -79,7 +79,7 @@ Measured on Apple M3 Pro, Node.js v24.
 
 ### Single file hashing
 
-| Size | sighash (BLAKE3) | sighash (XXH3) | Node.js SHA-256 |
+| Size | sigsum (BLAKE3) | sigsum (XXH3) | Node.js SHA-256 |
 |------|-----------------|----------------|-----------------|
 | 1 MB | 0.23ms | 0.11ms | 0.50ms |
 | 10 MB | 1.0ms | 0.58ms | 4.9ms |
@@ -89,8 +89,8 @@ Measured on Apple M3 Pro, Node.js v24.
 
 | Method | Mean | vs Node.js |
 |--------|------|-----------|
-| **sighash xxh3 batch** | **10.4ms** | **15.3x** |
-| sighash blake3 batch | 26.3ms | 6.0x |
+| **sigsum xxh3 batch** | **10.4ms** | **15.3x** |
+| sigsum blake3 batch | 26.3ms | 6.0x |
 | Node.js SHA-256 sequential | 159ms | 1x |
 
 Run benchmarks yourself:

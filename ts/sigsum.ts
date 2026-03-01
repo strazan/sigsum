@@ -1,13 +1,13 @@
 import type { Readable } from "node:stream";
 import { detectAlgorithm, getAlgo } from "./algo/index.js";
-import { SighashError, toSighashError } from "./errors.js";
+import { SigsumError, toSigsumError } from "./errors.js";
 import type { FileHashOptions, MatchResult, Options } from "./types.js";
 
 async function withErrors<T>(fn: () => Promise<T>): Promise<T> {
   try {
     return await fn();
   } catch (err) {
-    throw toSighashError(err);
+    throw toSigsumError(err);
   }
 }
 
@@ -32,7 +32,7 @@ const stream = (readable: Readable, options?: Options): Promise<string> => {
         hasher.update(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
       } catch (err) {
         readable.destroy();
-        reject(toSighashError(err));
+        reject(toSigsumError(err));
       }
     });
 
@@ -40,12 +40,12 @@ const stream = (readable: Readable, options?: Options): Promise<string> => {
       try {
         resolve(hasher.digest());
       } catch (err) {
-        reject(toSighashError(err));
+        reject(toSigsumError(err));
       }
     });
 
     readable.on("error", (err) => {
-      reject(new SighashError(`Stream error: ${err.message}`, { cause: err }));
+      reject(new SigsumError(`Stream error: ${err.message}`, { cause: err }));
     });
   });
 };
@@ -62,7 +62,7 @@ const match = (path: string, expectedHash: string): Promise<MatchResult> =>
     };
   });
 
-export const sighash = {
+export const sigsum = {
   file,
   files,
   buffer,

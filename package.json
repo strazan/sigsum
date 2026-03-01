@@ -1,5 +1,5 @@
 {
-  "name": "sighash",
+  "name": "sigsum",
   "version": "0.0.0",
   "description": "Fast file hashing with BLAKE3. Native Rust speed for duplicate detection, integrity checks, and content addressing.",
   "type": "module",
@@ -23,7 +23,7 @@
     "native.cjs",
     "native.d.cts",
     "index.d.ts",
-    "sighash.*.node"
+    "sigsum.*.node"
   ],
   "scripts": {
     "build:rs": "napi build --platform --release && mv index.js native.cjs",
@@ -41,7 +41,7 @@
     "version": "napi version"
   },
   "napi": {
-    "binaryName": "sighash",
+    "binaryName": "sigsum",
     "targets": [
       "x86_64-apple-darwin",
       "aarch64-apple-darwin",

@@ -9,7 +9,7 @@ pub const MMAP_THRESHOLD: u64 = 1024 * 1024; // 1 MB
 pub const RAYON_THRESHOLD: usize = 128 * 1024; // 128 KB
 
 #[derive(Debug, thiserror::Error)]
-pub enum SighashError {
+pub enum SigsumError {
     #[error("ENOENT: {0}")]
     NotFound(String),
 
@@ -17,8 +17,8 @@ pub enum SighashError {
     Io(#[from] io::Error),
 }
 
-impl From<SighashError> for napi::Error {
-    fn from(err: SighashError) -> Self {
+impl From<SigsumError> for napi::Error {
+    fn from(err: SigsumError) -> Self {
         napi::Error::new(napi::Status::GenericFailure, err.to_string())
     }
 }
@@ -58,14 +58,14 @@ impl FileData {
 }
 
 /// Open a file and return either an mmap or a heap buffer.
-pub fn read_file(path: &str, force_mmap: Option<bool>) -> Result<FileData, SighashError> {
+pub fn read_file(path: &str, force_mmap: Option<bool>) -> Result<FileData, SigsumError> {
     let file_path = Path::new(path);
 
     let metadata = fs::metadata(file_path).map_err(|e| {
         if e.kind() == io::ErrorKind::NotFound {
-            SighashError::NotFound(path.to_owned())
+            SigsumError::NotFound(path.to_owned())
         } else {
-            SighashError::Io(e)
+            SigsumError::Io(e)
         }
     })?;
 
