@@ -1,0 +1,11 @@
+{
+  "name": "sighash-darwin-x64",
+  "version": "0.0.0",
+  "os": ["darwin"],
+  "cpu": ["x64"],
+  "main": "sighash.darwin-x64.node",
+  "files": ["sighash.darwin-x64.node"],
+  "description": "sighash native binding for darwin-x64",
+  "license": "MIT",
+  "engines": { "node": ">=18" }
+}

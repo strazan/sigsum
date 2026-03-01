@@ -1,0 +1,11 @@
+{
+  "name": "sighash-win32-x64-msvc",
+  "version": "0.0.0",
+  "os": ["win32"],
+  "cpu": ["x64"],
+  "main": "sighash.win32-x64-msvc.node",
+  "files": ["sighash.win32-x64-msvc.node"],
+  "description": "sighash native binding for win32-x64-msvc",
+  "license": "MIT",
+  "engines": { "node": ">=18" }
+}

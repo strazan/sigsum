@@ -1,0 +1,12 @@
+{
+  "name": "sighash-linux-arm64-gnu",
+  "version": "0.0.0",
+  "os": ["linux"],
+  "cpu": ["arm64"],
+  "libc": ["glibc"],
+  "main": "sighash.linux-arm64-gnu.node",
+  "files": ["sighash.linux-arm64-gnu.node"],
+  "description": "sighash native binding for linux-arm64-gnu",
+  "license": "MIT",
+  "engines": { "node": ">=18" }
+}

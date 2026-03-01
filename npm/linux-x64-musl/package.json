@@ -1,0 +1,12 @@
+{
+  "name": "sighash-linux-x64-musl",
+  "version": "0.0.0",
+  "os": ["linux"],
+  "cpu": ["x64"],
+  "libc": ["musl"],
+  "main": "sighash.linux-x64-musl.node",
+  "files": ["sighash.linux-x64-musl.node"],
+  "description": "sighash native binding for linux-x64-musl",
+  "license": "MIT",
+  "engines": { "node": ">=18" }
+}
