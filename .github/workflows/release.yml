@@ -61,12 +61,16 @@ jobs:
         with:
           tool: cargo-zigbuild
       - name: Build native module
-        run: pnpm build:rs --target ${{ matrix.target }} ${{ matrix.flags || '' }} ${{ matrix.use-zig && '-x' || '' }}
+        run: |
+          npx napi build --platform --release --target ${{ matrix.target }} ${{ matrix.flags || '' }} ${{ matrix.use-zig && '-x' || '' }}
+          mv index.js native.cjs
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.target }}
-          path: "*.node"
+          path: |
+            *.node
+            native.cjs
           if-no-files-found: error
 
   test:
